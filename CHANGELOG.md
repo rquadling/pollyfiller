@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## 1.0.1 - 2019-12-21
+
+### Fixes
+- Add PHP 7.0.0 as minimum version
+- Removed unnecessary composer's autoloader access.
+
 ## 1.0.0 - 2019-12-21 - Initial release
 ### Arrays
 - `array_filter_keys` - Filters elements of an array using a callback function, based upon the key.
