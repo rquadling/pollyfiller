@@ -1,3 +1,13 @@
+<?php
+
+$finder = PhpCsFixer\Finder::create()
+    ->in(__DIR__);
+
+$header = <<<TXT
+Polyfiller
+
+LICENSE
+
 This is free and unencumbered software released into the public domain.
 
 Anyone is free to copy, modify, publish, use, compile, sell, or distribute this software, either in source code form or
@@ -14,3 +24,39 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRA
 OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 For more information, please refer to <https://unlicense.org>
+
+TXT;
+
+$rules = [
+    '@PSR2' => true,
+    '@Symfony' => true,
+    'cast_spaces' => [
+        'space' => 'none',
+    ],
+    'concat_space' => [
+        'spacing' => 'none',
+    ],
+    'native_function_invocation' => [
+        'scope' => 'namespaced',
+    ],
+    'psr4' => true,
+    'phpdoc_align' => [
+        'align' => 'left',
+    ],
+    'array_syntax' => [
+        'syntax' => 'short',
+    ],
+    'header_comment' => [
+        'header' => $header,
+        'commentType' => PhpCsFixer\Fixer\Comment\HeaderCommentFixer::HEADER_PHPDOC,
+    ],
+    'yoda_style' => false,
+];
+
+$cacheDir = getenv('TRAVIS') ? getenv('HOME') . '/.php-cs-fixer' : __DIR__;
+
+return PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
+    ->setRules($rules)
+    ->setFinder($finder)
+    ->setCacheFile($cacheDir . '/.php_cs.cache');
