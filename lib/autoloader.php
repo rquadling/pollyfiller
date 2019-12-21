@@ -24,9 +24,6 @@
  *
  */
 
-$autoLoader = require dirname(__DIR__).'/vendor/autoload.php';
-
-// Load additional functions.
 foreach (
     new RecursiveIteratorIterator(
         new RecursiveDirectoryIterator(

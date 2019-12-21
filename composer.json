@@ -11,7 +11,9 @@
         "optimize-autoloader": true,
         "sort-packages": true
     },
-    "require": {},
+    "require": {
+        "php": "^7"
+    },
     "autoload": {
         "files": [
             "lib/autoloader.php"
