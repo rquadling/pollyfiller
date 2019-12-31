@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file.
   or
   ```php
   public function testArrayToTable(array $set, array $column, array $options = ['options'=>0,'helperLines'=>5]): string {}
-```
+  ```
 
 ## 1.0.1 - 2019-12-21
 ### Fixes
