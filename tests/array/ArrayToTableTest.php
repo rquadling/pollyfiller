@@ -32,23 +32,25 @@ class ArrayToTableTest extends TestCase
 {
     /**
      * @dataProvider providerForArrayToTable
+     *
+     * @param int|array $options {options:int,helperLines:int}
      */
-    public function testArrayToTable(array $set, array $column, int $options)
+    public function testArrayToTable(array $set, array $column, $options)
     {
         /*
          * Code to generate fixtures.
          */
-        \file_put_contents(
-            \sprintf(
-                __DIR__.'/Fixtures/ArrayToTable/%s.txt',
-                \str_replace(
-                    ['with data set "', '"'],
-                    ['with data set - ', ''],
-                    $this->getDataSetAsString(false)
-                )
-            ),
-            array_to_table($set, $column, $options)
-        );
+//        \file_put_contents(
+//            \sprintf(
+//                __DIR__.'/Fixtures/ArrayToTable/%s.txt',
+//                \str_replace(
+//                    ['with data set "', '"'],
+//                    ['with data set - ', ''],
+//                    $this->getDataSetAsString(false)
+//                )
+//            ),
+//            array_to_table($set, $column, $options)
+//        );
 
         $this->assertEquals(
             \file_get_contents(
@@ -133,794 +135,937 @@ class ArrayToTableTest extends TestCase
             ],
         ];
 
-        return
-            [
-                '10 empty rows with no columns from set with Counter' => [$tenEmptyData, [['Counter' => true]], 0],
-                '10 empty rows with no columns from set with helper lines and Counter' => [$tenEmptyData, [['Counter' => true]], A2T_SHOW_HELPER_LINES],
-                '10 empty rows with no columns from set with helper lines and suppress totals and Counter' => [$tenEmptyData, [['Counter' => true]], A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS],
-                '10 empty rows with no columns from set with helper lines and suppress totals' => [$tenEmptyData, [], A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS],
-                '10 empty rows with no columns from set with helper lines' => [$tenEmptyData, [], A2T_SHOW_HELPER_LINES],
-                '10 empty rows with no columns from set with suppress totals and Counter' => [$tenEmptyData, [['Counter' => true]], A2T_SUPPRESS_TOTALS],
-                '10 empty rows with no columns from set with suppress totals' => [$tenEmptyData, [], A2T_SUPPRESS_TOTALS],
-                '10 empty rows with no columns from set' => [$tenEmptyData, [], 0],
+        return [
+            '10 empty rows with no columns from set with Counter' => [$tenEmptyData, [['Counter' => true]], 0],
+            '10 empty rows with no columns from set with helper lines and Counter' => [$tenEmptyData, [['Counter' => true]], A2T_SHOW_HELPER_LINES],
+            '10 empty rows with no columns from set with helper lines and suppress totals and Counter' => [$tenEmptyData, [['Counter' => true]], A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS],
+            '10 empty rows with no columns from set with helper lines and suppress totals' => [$tenEmptyData, [], A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS],
+            '10 empty rows with no columns from set with helper lines' => [$tenEmptyData, [], A2T_SHOW_HELPER_LINES],
+            '10 empty rows with no columns from set with suppress totals and Counter' => [$tenEmptyData, [['Counter' => true]], A2T_SUPPRESS_TOTALS],
+            '10 empty rows with no columns from set with suppress totals' => [$tenEmptyData, [], A2T_SUPPRESS_TOTALS],
+            '10 empty rows with no columns from set' => [$tenEmptyData, [], 0],
 
-                'Empty set with no columns from set with Counter' => [$nullData, [['Counter' => true]], 0],
-                'Empty set with no columns from set with helper lines and Counter' => [$nullData, [['Counter' => true]], A2T_SHOW_HELPER_LINES],
-                'Empty set with no columns from set with helper lines and suppress totals and Counter' => [$nullData, [['Counter' => true]], A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS],
-                'Empty set with no columns from set with helper lines and suppress totals' => [$nullData, [], A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS],
-                'Empty set with no columns from set with helper lines' => [$nullData, [], A2T_SHOW_HELPER_LINES],
-                'Empty set with no columns from set with suppress totals and Counter' => [$nullData, [['Counter' => true]], A2T_SUPPRESS_TOTALS],
-                'Empty set with no columns from set with suppress totals' => [$nullData, [], A2T_SUPPRESS_TOTALS],
-                'Empty set with no columns from set' => [$nullData, [], 0],
+            'Empty set with no columns from set with Counter' => [$nullData, [['Counter' => true]], 0],
+            'Empty set with no columns from set with helper lines and Counter' => [$nullData, [['Counter' => true]], A2T_SHOW_HELPER_LINES],
+            'Empty set with no columns from set with helper lines and suppress totals and Counter' => [$nullData, [['Counter' => true]], A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS],
+            'Empty set with no columns from set with helper lines and suppress totals' => [$nullData, [], A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS],
+            'Empty set with no columns from set with helper lines' => [$nullData, [], A2T_SHOW_HELPER_LINES],
+            'Empty set with no columns from set with suppress totals and Counter' => [$nullData, [['Counter' => true]], A2T_SUPPRESS_TOTALS],
+            'Empty set with no columns from set with suppress totals' => [$nullData, [], A2T_SUPPRESS_TOTALS],
+            'Empty set with no columns from set' => [$nullData, [], 0],
 
-                'Real data with no columns from set with Counter' => [$data, [['Counter' => true]], 0],
-                'Real data with no columns from set with helper lines and Counter' => [$data, [['Counter' => true]], A2T_SHOW_HELPER_LINES],
-                'Real data with no columns from set with helper lines and suppress totals and Counter' => [$data, [['Counter' => true]], A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS],
-                'Real data with no columns from set with helper lines and suppress totals' => [$data, [], A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS],
-                'Real data with no columns from set with helper lines' => [$data, [], A2T_SHOW_HELPER_LINES],
-                'Real data with no columns from set with suppress totals and Counter' => [$data, [['Counter' => true]], A2T_SUPPRESS_TOTALS],
-                'Real data with no columns from set with suppress totals' => [$data, [], A2T_SUPPRESS_TOTALS],
-                'Real data with no columns from set' => [$data, [], 0],
+            'Real data with no columns from set with Counter' => [$data, [['Counter' => true]], 0],
+            'Real data with no columns from set with helper lines and Counter' => [$data, [['Counter' => true]], A2T_SHOW_HELPER_LINES],
+            'Real data with no columns from set with helper lines and suppress totals and Counter' => [$data, [['Counter' => true]], A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS],
+            'Real data with no columns from set with helper lines and suppress totals' => [$data, [], A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS],
+            'Real data with no columns from set with helper lines' => [$data, [], A2T_SHOW_HELPER_LINES],
+            'Real data with no columns from set with suppress totals and Counter' => [$data, [['Counter' => true]], A2T_SUPPRESS_TOTALS],
+            'Real data with no columns from set with suppress totals' => [$data, [], A2T_SUPPRESS_TOTALS],
+            'Real data with no columns from set' => [$data, [], 0],
 
-                'Single empty row with no columns from set with Counter' => [$singleEmptyData, [['Counter' => true]], 0],
-                'Single empty row with no columns from set with helper lines and Counter' => [$singleEmptyData, [['Counter' => true]], A2T_SHOW_HELPER_LINES],
-                'Single empty row with no columns from set with helper lines and suppress totals and Counter' => [$singleEmptyData, [['Counter' => true]], A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS],
-                'Single empty row with no columns from set with helper lines and suppress totals' => [$singleEmptyData, [], A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS],
-                'Single empty row with no columns from set with helper lines' => [$singleEmptyData, [], A2T_SHOW_HELPER_LINES],
-                'Single empty row with no columns from set with suppress totals and Counter' => [$singleEmptyData, [['Counter' => true]], A2T_SUPPRESS_TOTALS],
-                'Single empty row with no columns from set with suppress totals' => [$singleEmptyData, [], A2T_SUPPRESS_TOTALS],
-                'Single empty row with no columns from set' => [$singleEmptyData, [], 0],
+            'Single empty row with no columns from set with Counter' => [$singleEmptyData, [['Counter' => true]], 0],
+            'Single empty row with no columns from set with helper lines and Counter' => [$singleEmptyData, [['Counter' => true]], A2T_SHOW_HELPER_LINES],
+            'Single empty row with no columns from set with helper lines and suppress totals and Counter' => [$singleEmptyData, [['Counter' => true]], A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS],
+            'Single empty row with no columns from set with helper lines and suppress totals' => [$singleEmptyData, [], A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS],
+            'Single empty row with no columns from set with helper lines' => [$singleEmptyData, [], A2T_SHOW_HELPER_LINES],
+            'Single empty row with no columns from set with suppress totals and Counter' => [$singleEmptyData, [['Counter' => true]], A2T_SUPPRESS_TOTALS],
+            'Single empty row with no columns from set with suppress totals' => [$singleEmptyData, [], A2T_SUPPRESS_TOTALS],
+            'Single empty row with no columns from set' => [$singleEmptyData, [], 0],
 
-                'Real data with Value, Position, and LongText columns with Counter' => [
-                    $data,
-                    [
-                        ['Counter' => true],
-                        'Value' => [],
-                        'Position' => [],
-                        'LongText' => [],
-                    ],
-                    0,
+            'Real data with Value, Position, and LongText columns with Counter' => [
+                $data,
+                [
+                    ['Counter' => true],
+                    'Value' => [],
+                    'Position' => [],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and Counter' => [
-                    $data,
-                    [
-                        ['Counter' => true],
-                        'Value' => [],
-                        'Position' => [],
-                        'LongText' => [],
-                    ],
-                    A2T_SHOW_HELPER_LINES,
+                0,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and Counter' => [
+                $data,
+                [
+                    ['Counter' => true],
+                    'Value' => [],
+                    'Position' => [],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter' => [
-                    $data,
-                    [
-                        ['Counter' => true],
-                        'Value' => [],
-                        'Position' => [],
-                        'LongText' => [],
-                    ],
-                    A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter' => [
+                $data,
+                [
+                    ['Counter' => true],
+                    'Value' => [],
+                    'Position' => [],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and suppress totals' => [
-                    $data,
-                    [
-                        'Value' => [],
-                        'Position' => [],
-                        'LongText' => [],
-                    ],
-                    A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and suppress totals' => [
+                $data,
+                [
+                    'Value' => [],
+                    'Position' => [],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines' => [
-                    $data,
-                    [
-                        'Value' => [],
-                        'Position' => [],
-                        'LongText' => [],
-                    ],
-                    A2T_SHOW_HELPER_LINES,
+                A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines' => [
+                $data,
+                [
+                    'Value' => [],
+                    'Position' => [],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with suppress totals and Counter' => [
-                    $data,
-                    [
-                        ['Counter' => true],
-                        'Value' => [],
-                        'Position' => [],
-                        'LongText' => [],
-                    ],
-                    A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES,
+            ],
+            'Real data with Value, Position, and LongText columns with suppress totals and Counter' => [
+                $data,
+                [
+                    ['Counter' => true],
+                    'Value' => [],
+                    'Position' => [],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with suppress totals' => [
-                    $data,
-                    [
-                        'Value' => [],
-                        'Position' => [],
-                        'LongText' => [],
-                    ],
-                    A2T_SUPPRESS_TOTALS,
+                A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, and LongText columns with suppress totals' => [
+                $data,
+                [
+                    'Value' => [],
+                    'Position' => [],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns' => [
-                    $data,
-                    [
-                        'Value' => [],
-                        'Position' => [],
-                        'LongText' => [],
-                    ],
-                    0,
+                A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, and LongText columns' => [
+                $data,
+                [
+                    'Value' => [],
+                    'Position' => [],
+                    'LongText' => [],
                 ],
+                0,
+            ],
 
-                'Real data with Value, Position, and LongText columns with Counter and Alignment' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    0,
+            'Real data with Value, Position, and LongText columns with Counter and Alignment' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    A2T_SHOW_HELPER_LINES,
+                0,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
+                A2T_SUPPRESS_TOTALS,
+            ],
 
-                'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 1' => [
-                    $data,
-                    [
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    0,
+            'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 1' => [
+                $data,
+                [
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 1' => [
-                    $data,
-                    [
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    A2T_SHOW_HELPER_LINES,
+                0,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 1' => [
+                $data,
+                [
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 1' => [
-                    $data,
-                    [
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 1' => [
+                $data,
+                [
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 1' => [
-                    $data,
-                    [
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 1' => [
+                $data,
+                [
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
+                A2T_SUPPRESS_TOTALS,
+            ],
 
-                'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 2' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    0,
+            'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 2' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 2' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    A2T_SHOW_HELPER_LINES,
+                0,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 2' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 2' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 2' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 2' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 2' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
+                A2T_SUPPRESS_TOTALS,
+            ],
 
-                'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 3' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    0,
+            'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 3' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 3' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    A2T_SHOW_HELPER_LINES,
+                0,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 3' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 3' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 3' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 3' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 3' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
+                A2T_SUPPRESS_TOTALS,
+            ],
 
-                'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 3 and Split' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    0,
+            'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 3 and Split' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 3 and Split' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    A2T_SHOW_HELPER_LINES,
+                0,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 3 and Split' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
-                'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 3 and Split' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => [],
-                    ],
-                    A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 3 and Split' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => [],
                 ],
+                A2T_SUPPRESS_TOTALS,
+            ],
 
-                'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 3 and Split and Wrap' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                    ],
-                    0,
+            'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 3 and Split and Wrap' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
                 ],
-                'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 3 and Split and Wrap Left' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_LEFT],
-                    ],
-                    0,
+                0,
+            ],
+            'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 3 and Split and Wrap Left' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_LEFT],
                 ],
-                'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 3 and Split and Wrap Both' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_BOTH],
-                    ],
-                    0,
+                0,
+            ],
+            'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 3 and Split and Wrap Both' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_BOTH],
                 ],
-                'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 3 and Split and Wrap Right' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_RIGHT],
-                    ],
-                    0,
+                0,
+            ],
+            'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 3 and Split and Wrap Right' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_RIGHT],
                 ],
+                0,
+            ],
 
-                'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                    ],
-                    A2T_SHOW_HELPER_LINES,
+            'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap Left' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_LEFT],
-                    ],
-                    A2T_SHOW_HELPER_LINES,
+                A2T_SHOW_HELPER_LINES,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap Left' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_LEFT],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap Both' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_BOTH],
-                    ],
-                    A2T_SHOW_HELPER_LINES,
+                A2T_SHOW_HELPER_LINES,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap Both' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_BOTH],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap Right' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_RIGHT],
-                    ],
-                    A2T_SHOW_HELPER_LINES,
+                A2T_SHOW_HELPER_LINES,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap Right' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_RIGHT],
                 ],
+                A2T_SHOW_HELPER_LINES,
+            ],
 
-                'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split and Wrap' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                    ],
-                    A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+            'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split and Wrap' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split and Wrap Left' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_LEFT],
-                    ],
-                    A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split and Wrap Left' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_LEFT],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split and Wrap Both' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_BOTH],
-                    ],
-                    A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split and Wrap Both' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_BOTH],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split and Wrap Right' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_RIGHT],
-                    ],
-                    A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split and Wrap Right' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_RIGHT],
                 ],
+                A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+            ],
 
-                'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 3 and Split and Wrap' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                    ],
-                    A2T_SUPPRESS_TOTALS,
+            'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 3 and Split and Wrap' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
                 ],
-                'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 3 and Split and Wrap Left' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_LEFT],
-                    ],
-                    A2T_SUPPRESS_TOTALS,
+                A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 3 and Split and Wrap Left' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_LEFT],
                 ],
-                'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 3 and Split and Wrap Both' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_BOTH],
-                    ],
-                    A2T_SUPPRESS_TOTALS,
+                A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 3 and Split and Wrap Both' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_BOTH],
                 ],
-                'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 3 and Split and Wrap Right' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_RIGHT],
-                    ],
-                    A2T_SUPPRESS_TOTALS,
+                A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 3 and Split and Wrap Right' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true, 'Align' => STR_PAD_RIGHT],
                 ],
+                A2T_SUPPRESS_TOTALS,
+            ],
 
-                'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 3 and Split and Wrap and Total' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                    ],
-                    0,
+            'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 3 and Split and Wrap and Total' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                    ],
-                    A2T_SHOW_HELPER_LINES,
+                0,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                    ],
-                    A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
                 ],
-                'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                    ],
-                    A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
                 ],
+                A2T_SUPPRESS_TOTALS,
+            ],
 
-                'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                    ],
-                    0,
+            'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                    ],
-                    A2T_SHOW_HELPER_LINES,
+                0,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                    ],
-                    A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
                 ],
-                'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                    ],
-                    A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
                 ],
+                A2T_SUPPRESS_TOTALS,
+            ],
 
-                'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                    ],
-                    0,
+            'Real data with Value, Position, and LongText columns with Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                    ],
-                    A2T_SHOW_HELPER_LINES,
+                0,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
                 ],
-                'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                    ],
-                    A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES,
+            ],
+            'Real data with Value, Position, and LongText columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
                 ],
-                'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                    ],
-                    A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, and LongText columns with suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
                 ],
+                A2T_SUPPRESS_TOTALS,
+            ],
 
-                'Real data with Value, Position, LongText, and Float columns with Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                        'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
-                    ],
-                    0,
+            'Real data with Value, Position, LongText, and Float columns with Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
+                    'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
                 ],
-                'Real data with Value, Position, LongText, and Float columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                        'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
-                    ],
-                    A2T_SHOW_HELPER_LINES,
+                0,
+            ],
+            'Real data with Value, Position, LongText, and Float columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
+                    'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
                 ],
-                'Real data with Value, Position, LongText, and Float columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                        'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
-                    ],
-                    A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES,
+            ],
+            'Real data with Value, Position, LongText, and Float columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
+                    'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
                 ],
-                'Real data with Value, Position, LongText, and Float columns with suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                        'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
-                    ],
-                    A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, LongText, and Float columns with suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
+                    'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
                 ],
+                A2T_SUPPRESS_TOTALS,
+            ],
 
-                'Real data with Value, Position, LongText, and Float columns with Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                        'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
-                    ],
-                    0,
+            'Real data with Value, Position, LongText, and Float columns with Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
+                    'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
                 ],
-                'Real data with Value, Position, LongText, and Float columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                        'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
-                    ],
-                    A2T_SHOW_HELPER_LINES,
+                0,
+            ],
+            'Real data with Value, Position, LongText, and Float columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
+                    'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
                 ],
-                'Real data with Value, Position, LongText, and Float columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                        'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
-                    ],
-                    A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES,
+            ],
+            'Real data with Value, Position, LongText, and Float columns with helper lines and suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
+                    'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
                 ],
-                'Real data with Value, Position, LongText, and Float columns with suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3' => [
-                    $data,
-                    [
-                        ['Counter' => true, 'Align' => STR_PAD_LEFT],
-                        'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
-                        ['Split' => '| '],
-                        ['Header' => 'An Extra Heading', 'Columns' => 2],
-                        'Position' => ['Align' => STR_PAD_RIGHT],
-                        'LongText' => ['Width' => 20, 'Wrap' => true],
-                        'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
-                    ],
-                    A2T_SUPPRESS_TOTALS,
+                A2T_SHOW_HELPER_LINES | A2T_SUPPRESS_TOTALS,
+            ],
+            'Real data with Value, Position, LongText, and Float columns with suppress totals and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
+                    'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
                 ],
-            ];
+                A2T_SUPPRESS_TOTALS,
+            ],
+
+            'Real data with Value, Position, LongText, and Float columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3 options in array' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
+                    'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
+                ],
+                ['options' => A2T_SHOW_HELPER_LINES],
+            ],
+            'Real data with Value, Position, LongText, and Float columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3 options in array, 1 helperline' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
+                    'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
+                ],
+                ['options' => A2T_SHOW_HELPER_LINES, 'helperLines' => 1],
+            ],
+            'Real data with Value, Position, LongText, and Float columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3 options in array, 2 helperline' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
+                    'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
+                ],
+                ['options' => A2T_SHOW_HELPER_LINES, 'helperLines' => 2],
+            ],
+            'Real data with Value, Position, LongText, and Float columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3 options in array, 3 helperline' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
+                    'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
+                ],
+                ['options' => A2T_SHOW_HELPER_LINES, 'helperLines' => 3],
+            ],
+            'Real data with Value, Position, LongText, and Float columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3 options in array, 4 helperline' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
+                    'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
+                ],
+                ['options' => A2T_SHOW_HELPER_LINES, 'helperLines' => 4],
+            ],
+            'Real data with Value, Position, LongText, and Float columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3 options in array, 5 helperline' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
+                    'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
+                ],
+                ['options' => A2T_SHOW_HELPER_LINES, 'helperLines' => 5],
+            ],
+            'Real data with Value, Position, LongText, and Float columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3 options in array, 6 helperline' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
+                    'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
+                ],
+                ['options' => A2T_SHOW_HELPER_LINES, 'helperLines' => 6],
+            ],
+            'Real data with Value, Position, LongText, and Float columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3 options in array, 7 helperline' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
+                    'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
+                ],
+                ['options' => A2T_SHOW_HELPER_LINES, 'helperLines' => 7],
+            ],
+            'Real data with Value, Position, LongText, and Float columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3 options in array, 8 helperline' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
+                    'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
+                ],
+                ['options' => A2T_SHOW_HELPER_LINES, 'helperLines' => 8],
+            ],
+            'Real data with Value, Position, LongText, and Float columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 3 options in array, 9 helperline' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
+                    'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
+                ],
+                ['options' => A2T_SHOW_HELPER_LINES, 'helperLines' => 9],
+            ],
+            'Real data with Value, Position, LongText, and Float columns with helper lines and Counter and Alignment and Header position 3 and Split and Wrap and Total and Percentage and Highlight Value 8 options in array, 10 helperline' => [
+                $data,
+                [
+                    ['Counter' => true, 'Align' => STR_PAD_LEFT],
+                    'Value' => ['Align' => STR_PAD_BOTH, 'Total' => 0, '%age' => true, 'Highlight' => 3],
+                    ['Split' => '| '],
+                    ['Header' => 'An Extra Heading', 'Columns' => 2],
+                    'Position' => ['Align' => STR_PAD_RIGHT],
+                    'LongText' => ['Width' => 20, 'Wrap' => true],
+                    'Float' => ['Title' => 'Decimal', 'Align' => STR_PAD_LEFT, 'Total' => 0, 'DP' => 4, '%age' => true],
+                ],
+                ['options' => A2T_SHOW_HELPER_LINES, 'helperLines' => 10],
+            ],
+        ];
     }
 }

@@ -39,12 +39,17 @@ if (!function_exists('array_to_table')) {
      *
      * @param array $data the data with the keys being used as the first column
      * @param array $columnInfo the column information
-     * @param int $options a bitmask of options
+     * @param int|array $options if an int, then this becomes the 'options' value. {options:int,helperLines:int}
      *
      * @return string the plain text table
      */
-    function array_to_table(array $data, array $columnInfo, int $options = 0): string
+    function array_to_table(array $data, array $columnInfo, $options = null): string
     {
+        $options = array_merge(
+            ['options' => 0, 'helperLines' => 5],
+            is_array($options) ? $options
+                : (is_int($options) ? ['options' => $options] : [])
+        );
         $requireGroupHeaders = false;
 
         //  Determine the width for the title for each column, taking into account any presupplied widths.
@@ -184,8 +189,8 @@ if (!function_exists('array_to_table')) {
         $bodyCount = 0;
         $lineCount = 0;
         foreach ($data as $key => &$row) {
-            if (($options & A2T_SHOW_HELPER_LINES)) {
-                if (($bodyCount > 0) && (0 == $bodyCount % 5)) {
+            if (($options['options'] & A2T_SHOW_HELPER_LINES)) {
+                if (($bodyCount > 0) && (0 == $bodyCount % $options['helperLines'])) {
                     $tableBody .= str_replace('=', '-', $tableUnderline);
                 }
             }
@@ -204,7 +209,7 @@ if (!function_exists('array_to_table')) {
                             mb_str_pad(
                                 !is_numeric(trim($row[$columnInfoColumn])) ? $row[$columnInfoColumn] : ((is_null(
                                     $row[$columnInfoColumn]
-                                ) || (0 == $row[$columnInfoColumn] && A2T_SUPPRESS_ZEROS & $options)
+                                ) || (0 == $row[$columnInfoColumn] && $options['options'] & A2T_SUPPRESS_ZEROS)
                                     ? ' ' : number_format(
                                         $row[$columnInfoColumn],
                                         array_get($columnInfoData, 'DP', 0)
@@ -261,8 +266,8 @@ if (!function_exists('array_to_table')) {
             }
             $tableBody = rtrim($tableBody).PHP_EOL;
             while (!empty($wrappedColumns)) {
-                if (($options & A2T_SHOW_HELPER_LINES)) {
-                    if (($bodyCount > 0) && (0 == $bodyCount % 5)) {
+                if (($options['options'] & A2T_SHOW_HELPER_LINES)) {
+                    if (($bodyCount > 0) && (0 == $bodyCount % $options['helperLines'])) {
                         $tableBody .= str_replace('=', '-', $tableUnderline);
                     }
                 }
@@ -293,6 +298,6 @@ if (!function_exists('array_to_table')) {
             }
         }
 
-        return $tableHeaderGroup.$tableHeaderDetail.$tableUnderline.$tableBody.($options & A2T_SUPPRESS_TOTALS ? '' : $tableUnderline.$tableFooter);
+        return $tableHeaderGroup.$tableHeaderDetail.$tableUnderline.$tableBody.($options['options'] & A2T_SUPPRESS_TOTALS ? '' : $tableUnderline.$tableFooter);
     }
 }
