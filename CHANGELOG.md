@@ -1,8 +1,20 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## 1.0.1 - 2019-12-21
+## 1.1.0 - 2019-12-31
+### Arrays
+- Expanded the signature for `array_to_table` to allow the `$options` to be an array of `options` and `helperLines` or
+  just an integer.
+  e.g.
+  ```php
+  public function testArrayToTable(array $set, array $column, int $options = 0): string {}
+  ```
+  or
+  ```php
+  public function testArrayToTable(array $set, array $column, array $options = ['options'=>0,'helperLines'=>5]): string {}
+```
 
+## 1.0.1 - 2019-12-21
 ### Fixes
 - Add PHP 7.0.0 as minimum version
 - Removed unnecessary composer's autoloader access.
