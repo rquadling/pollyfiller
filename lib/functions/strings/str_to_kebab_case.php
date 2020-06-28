@@ -33,7 +33,7 @@ if (!function_exists('str_to_kebab_case')) {
         $delimiter = '-';
 
         return ltrim(
-            preg_replace_callback(
+            (string)preg_replace_callback(
                 '`([A-Z])`',
                 function ($c) use ($delimiter) {
                     return $delimiter.strtolower($c[1]);

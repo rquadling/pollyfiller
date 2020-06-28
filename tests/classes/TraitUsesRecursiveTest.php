@@ -36,13 +36,18 @@ class TraitUsesRecursiveTest extends TestCase
 {
     /**
      * @dataProvider providerForTraitUsesRecursive
+     *
+     * @param array<class-string, class-string> $expected
      */
-    public function testTraitUsesRecursive(string $trait, array $expected)
+    public function testTraitUsesRecursive(string $trait, array $expected): void
     {
         $this->assertEquals($expected, trait_uses_recursive($trait));
     }
 
-    public function providerForTraitUsesRecursive()
+    /**
+     * @return array<string, array<int, array<string, class-string>|class-string>>
+     */
+    public function providerForTraitUsesRecursive(): array
     {
         return
             [

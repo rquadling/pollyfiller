@@ -30,12 +30,12 @@ if (!function_exists('array_filter_keys')) {
      *
      * This function operates in the same way as PHP's array_filter() function, but uses the key rather than the value.
      *
-     * @param array $data The array to iterate over
+     * @param array<mixed, mixed> $data The array to iterate over
      * @param callable|null $callback The callback function to use. If no callback is supplied, all entries of input
      *                                equal to FALSE will be removed.
      *                                The callback parameters are $key and must return a boolean.
      *
-     * @return array Returns filtered elements
+     * @return array<mixed, mixed> Returns filtered elements
      *
      * @author acid24@gmail.com via http://www.php.net/manual/en/function.array-filter.php#99073
      */

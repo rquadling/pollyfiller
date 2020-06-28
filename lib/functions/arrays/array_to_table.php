@@ -37,9 +37,9 @@ if (!function_exists('array_to_table')) {
     /**
      * Convert an array that fits a database result set into a plain text table.
      *
-     * @param array $data the data with the keys being used as the first column
-     * @param array $columnInfo the column information
-     * @param int|array $options if an int, then this becomes the 'options' value. {options:int,helperLines:int}
+     * @param array<string|int, array<mixed, mixed>> $data the data with the keys being used as the first column
+     * @param array<string|int, string|int> $columnInfo the column information
+     * @param int|array<string, int> $options if an int, then this becomes the 'options' value. {options:int,helperLines:int}
      *
      * @return string the plain text table
      */
@@ -220,8 +220,8 @@ if (!function_exists('array_to_table')) {
                                 array_get($columnInfoData, 'Align', STR_PAD_LEFT)
                             ).
                             (
-                            (bool)array_get($columnInfoData, '%age', false) ?
-                                ' ('.mb_str_pad(
+                            (bool)array_get($columnInfoData, '%age', false)
+                                ? ' ('.mb_str_pad(
                                     number_format((100 * $row[$columnInfoColumn]) / $columnInfoData['Total'], 2),
                                     6,
                                     ' ',
@@ -229,11 +229,8 @@ if (!function_exists('array_to_table')) {
                                 ).'%)'
                                 : ''
                             ).
-                            (((bool)array_get(
-                                    $columnInfoData,
-                                    'Highlight',
-                                    false
-                                ) && $row[$columnInfoColumn] === $columnInfoData['Highlight'])
+                            (((bool)array_get($columnInfoData, 'Highlight', false)
+                                && $row[$columnInfoColumn] === $columnInfoData['Highlight'])
                                 ? chr(27).'[0;37m'
                                 : ''
                             );

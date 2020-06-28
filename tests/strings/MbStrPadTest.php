@@ -33,12 +33,15 @@ class MbStrPadTest extends TestCase
     /**
      * @dataProvider provideDataForMbStrPad
      */
-    public function testMbStrPad(string $input, int $length, string $padding, int $padType, string $result)
+    public function testMbStrPad(string $input, int $length, string $padding, int $padType, string $result): void
     {
         $this->assertEquals($result, mb_str_pad($input, $length, $padding, $padType));
     }
 
-    public function provideDataForMbStrPad()
+    /**
+     * @return array<int, array<int, string|int|string|int|string>>
+     */
+    public function provideDataForMbStrPad(): array
     {
         return [
             ['Nhiều byte string đệm', 0, ' ', STR_PAD_BOTH, 'Nhiều byte string đệm'],

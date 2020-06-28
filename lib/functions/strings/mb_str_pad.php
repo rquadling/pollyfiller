@@ -30,10 +30,10 @@ if (!function_exists('mb_str_pad')) {
      *
      * Functionally, the equivalent of the standard str_pad function, but is capable of successfully padding multibyte strings.
      */
-    function mb_str_pad(string $input, int $length, string $padding = ' ', int $padType = STR_PAD_RIGHT, string $encoding = 'UTF-8'): string
+    function mb_str_pad(?string $input, int $length, string $padding = ' ', int $padType = STR_PAD_RIGHT, string $encoding = 'UTF-8'): ?string
     {
         $result = $input;
-        if (($paddingRequired = $length - mb_strlen($input, $encoding)) > 0) {
+        if (($paddingRequired = $length - mb_strlen($input ?? '', $encoding)) > 0) {
             switch ($padType) {
                 case STR_PAD_LEFT:
                     $result =
@@ -46,7 +46,7 @@ if (!function_exists('mb_str_pad')) {
                         mb_substr(str_repeat($padding, $paddingRequired), 0, $paddingRequired, $encoding);
                     break;
                 case STR_PAD_BOTH:
-                    $leftPaddingLength = floor($paddingRequired / 2);
+                    $leftPaddingLength = intval(floor($paddingRequired / 2));
                     $rightPaddingLength = $paddingRequired - $leftPaddingLength;
                     $result =
                         mb_substr(str_repeat($padding, $leftPaddingLength), 0, $leftPaddingLength, $encoding).

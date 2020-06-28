@@ -24,7 +24,7 @@
  *
  */
 
-namespace RQuadlingTests\includes;
+namespace RQuadlingTests;
 
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
@@ -35,12 +35,15 @@ class AutoloaderTest extends TestCase
     /**
      * @dataProvider providerForAutoloaderLoadingFunctions
      */
-    public function testAutoloaderHasLoadedFunction(string $function)
+    public function testAutoloaderHasLoadedFunction(string $function): void
     {
         $this->assertTrue(\function_exists($function));
     }
 
-    public function providerForAutoloaderLoadingFunctions()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function providerForAutoloaderLoadingFunctions(): array
     {
         $functions = [];
         foreach (

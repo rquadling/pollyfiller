@@ -27,6 +27,8 @@
 if (!function_exists('trait_uses_recursive')) {
     /**
      * Returns all traits used by a trait and its traits.
+     *
+     * @return string[]
      */
     function trait_uses_recursive(string $trait): array
     {
