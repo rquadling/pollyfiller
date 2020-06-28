@@ -37,16 +37,20 @@ use RQuadlingTests\classes\Fixtures\ParentTrait;
 class ClassUsesRecursiveTest extends TestCase
 {
     /**
-     * @param string|object $class
+     * @param string|ParentClass $class
+     * @param array<class-string, class-string> $expected
      *
      * @dataProvider providerForClassUsesRecursive
      */
-    public function testClassUsesRecursive($class, array $expected)
+    public function testClassUsesRecursive($class, array $expected): void
     {
         $this->assertEquals($expected, class_uses_recursive($class));
     }
 
-    public function providerForClassUsesRecursive()
+    /**
+     * @return array<string, array<int, array<string,class-string>|class-string|ParentClass>>
+     */
+    public function providerForClassUsesRecursive(): array
     {
         return
             [

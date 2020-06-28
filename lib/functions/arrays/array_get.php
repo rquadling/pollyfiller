@@ -28,7 +28,7 @@ if (!function_exists('array_get')) {
     /**
      * Returns the requested value from an array based upon the key or the default value if the key does not exist.
      *
-     * @param array $data the data to examine
+     * @param array<mixed, mixed> $data the data to examine
      * @param int|string|int[]|string[] $key the key or array of nested keys to find in the array
      * @param mixed $default the value to return if the key cannot be found
      *

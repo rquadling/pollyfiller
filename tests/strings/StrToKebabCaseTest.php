@@ -33,12 +33,15 @@ class StrToKebabCaseTest extends TestCase
     /**
      * @dataProvider providerForKebabCase
      */
-    public function testToKebabCase(string $test, string $result)
+    public function testToKebabCase(string $test, string $result): void
     {
         $this->assertEquals($result, str_to_kebab_case($test));
     }
 
-    public function providerForKebabCase()
+    /**
+     * @return array<int, array<int, string>>
+     */
+    public function providerForKebabCase(): array
     {
         return [
             ['i', 'i'],

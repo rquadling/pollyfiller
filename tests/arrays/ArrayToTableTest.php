@@ -33,9 +33,11 @@ class ArrayToTableTest extends TestCase
     /**
      * @dataProvider providerForArrayToTable
      *
-     * @param int|array $options {options:int,helperLines:int}
+     * @param array<string|int, array<mixed, mixed>> $set
+     * @param string[] $column
+     * @param int|array<string, int> $options
      */
-    public function testArrayToTable(array $set, array $column, $options)
+    public function testArrayToTable(array $set, array $column, $options): void
     {
         /*
          * Code to generate fixtures.
@@ -67,7 +69,10 @@ class ArrayToTableTest extends TestCase
         );
     }
 
-    public function providerForArrayToTable()
+    /**
+     * @return array<string, array<int, array<int|string, array<string, float|int|string|true>|int>|int>>
+     */
+    public function providerForArrayToTable(): array
     {
         $nullData = [];
         $singleEmptyData = [[]];

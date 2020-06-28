@@ -29,6 +29,8 @@ if (!function_exists('class_uses_recursive')) {
      * Returns all traits used by a class, its parent classes and trait of their traits.
      *
      * @param object|string $class
+     *
+     * @return string[]
      */
     function class_uses_recursive($class): array
     {

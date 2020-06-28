@@ -32,12 +32,19 @@ class ArrayFilterKeysTest extends TestCase
 {
     /**
      * @dataProvider providerForArrayFilterKeys
+     *
+     * @param array<int, array<int|string, true>> $data
+     * @param (\Closure(string):int) $callback
+     * @param array<string, true> $expected
      */
-    public function testArrayFilterKeys(array $data, callable $callback = null, array $expected)
+    public function testArrayFilterKeys(array $data, ?callable $callback, array $expected): void
     {
         $this->assertEquals($expected, array_filter_keys($data, $callback));
     }
 
+    /**
+     * @return array<string, array<int, array<int|string, true>|(Closure(string):int)|string|null>>
+     */
     public function providerForArrayFilterKeys()
     {
         return
@@ -46,7 +53,7 @@ class ArrayFilterKeysTest extends TestCase
                 'Empty set with function filter' => [[], 'strlen', []],
                 'Empty set with callable filter' => [
                     [],
-                    function (string $key) {
+                    function (string $key): int {
                         return \strlen($key);
                     },
                     [],
@@ -55,7 +62,7 @@ class ArrayFilterKeysTest extends TestCase
                 'Function filter' => [[true, '' => true, '0' => true], 'strlen', ['0' => true]],
                 'Callable filter' => [
                     [true, '' => true, '0' => true],
-                    function (string $key) {
+                    function (string $key): int {
                         return \strlen($key);
                     },
                     ['0' => true],

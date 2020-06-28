@@ -32,8 +32,10 @@ class ArrayGetTest extends TestCase
 {
     /**
      * @dataProvider providerForArrayGetNonMatching
+     *
+     * @param array<int, array<string|int, int>> $data
      */
-    public function testNull(array $data)
+    public function testNull(array $data): void
     {
         foreach ([0, [200, 'Unknown']] as $key) {
             $this->assertNull(array_get($data, $key));
@@ -42,8 +44,10 @@ class ArrayGetTest extends TestCase
 
     /**
      * @dataProvider providerForArrayGetNonMatching
+     *
+     * @param array<int, array<string|int, int>> $data
      */
-    public function testTrue(array $data)
+    public function testTrue(array $data): void
     {
         foreach ([0, [200, 'Unknown']] as $key) {
             $this->assertTrue(array_get($data, $key, true));
@@ -52,14 +56,19 @@ class ArrayGetTest extends TestCase
 
     /**
      * @dataProvider providerForArrayGetNonMatching
+     *
+     * @param array<int, array<string|int, int>> $data
      */
-    public function testFalse(array $data)
+    public function testFalse(array $data): void
     {
         foreach ([0, [200, 'Unknown']] as $key) {
             $this->assertFalse(array_get($data, $key, false));
         }
     }
 
+    /**
+     * @return array<string, array<int, array<string|int, int>>>
+     */
     public function providerForArrayGetNonMatching(): array
     {
         return [
@@ -69,15 +78,20 @@ class ArrayGetTest extends TestCase
     }
 
     /**
-     * @param array|string $expected
+     * @param array<string, array<string, array<string, array<string, string>>>> $data
+     * @param array<int, string> $keys
+     * @param array<string, array<string, array<string, string>|string>|string>|string $expected
      *
      * @dataProvider providerForArrayGetMatching
      */
-    public function testResults(array $data, array $keys, $expected)
+    public function testResults(array $data, array $keys, $expected): void
     {
         $this->assertEquals($expected, array_get($data, $keys, 'default'));
     }
 
+    /**
+     * @return array<int, array<int, array<int|string, array<string, array<string, array<string, string>|string>|string>|string>|string>>
+     */
     public function providerForArrayGetMatching(): array
     {
         $data = ['nest' => ['nest' => ['nest' => ['nest' => 'end']]]];
